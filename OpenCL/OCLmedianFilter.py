@@ -4,14 +4,11 @@ import numpy as np
 from imageio import imread, imsave
 import time
 
+image = "jet"
+noiseLevel = ["30", "50"]
 
 # Read in image
-img = imread("bridge.png").astype(np.float32)
-# print(img.shape)
-#img = np.mean(img, axis=2)
-# print(img.shape)
-
-
+img = imread("dataset"+noiseLevel[0]+"/"+image+".png").astype(np.float32)
 ctx = cl.create_some_context()
 queue = cl.CommandQueue(ctx)
 
@@ -94,10 +91,10 @@ height_g = cl.Buffer(
 )
 # Call Kernel. Automatically takes care of block/grid distribution
 prg.medianFilter(queue, img.shape, None, img_g, result_g, width_g, height_g)
-result = np.empty_like(img)
-cl.enqueue_copy(queue, result, result_g)
+removed_noise = np.empty_like(img)
+cl.enqueue_copy(queue, removed_noise, result_g)
 
 # Show the blurred image
-imsave("OCL5.png", result)
+imsave("results/OpenCLfiltered"+noiseLevel[0]+image+".png", removed_noise)
 end = time.perf_counter()
 print(f'Finished in {round(end-start, 2)} second(s)')

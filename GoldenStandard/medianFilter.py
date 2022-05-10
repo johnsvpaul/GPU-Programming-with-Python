@@ -33,10 +33,11 @@ start = time.perf_counter()
 
 
 def main():
-
-    img = imread("bridge.png").astype(np.float32)
+    image = "bridge"
+    noiseLevel = ["30", "50"]
+    img = imread("dataset/"+noiseLevel[0]+"/"+image+".png").astype(np.float32)
     removed_noise = median_filter(img, 3)
-    imsave("yolo.png", removed_noise)
+    imsave("results/filtered"+noiseLevel[0]+image+".png", removed_noise)
 
 
 main()
