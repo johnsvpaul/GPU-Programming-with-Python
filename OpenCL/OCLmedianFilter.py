@@ -126,10 +126,12 @@ elapsed = 1e-9*(event.profile.end - event.profile.start)
 print("GPU Kernel Time: {0} s".format(elapsed))
 
 # Create an empty array the same size as array img
-removed_noise = np.empty_like(img).astype(np.uint8)
+removed_noise = np.empty_like(img)
 
 # Read back the data from GPU memory into array img
+
 cl.enqueue_copy(queue, removed_noise, result_g).wait()
+
 gpu_end_time = time()  # Get the GPU end time
 
 # Print the time the GPU program took, including both memory copies
@@ -151,4 +153,5 @@ print("GPU Time: {0} s".format(gpu_end_time - gpu_start_time))
 #         print("Device compute units:", device.max_compute_units)
 
 # save image
-imsave("results/OpenCLfiltered"+noiseLevel[0]+image+".png", removed_noise)
+imsave("results/OpenCLfiltered" +
+       noiseLevel[0]+image+".png", removed_noise.astype(np.uint8))
