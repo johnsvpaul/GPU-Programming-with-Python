@@ -1,5 +1,5 @@
 import numpy as np
-import time
+from time import time  # Import time tools
 from imageio import imread, imsave
 
 
@@ -8,6 +8,7 @@ def median_filter(data, filter_size):
     indexer = filter_size // 2
     data_final = []
     data_final = np.zeros((len(data), len(data[0])))
+    cpu_start_time = time()  # Get the CPU start time
     for i in range(len(data)):
 
         for j in range(len(data[0])):
@@ -26,20 +27,18 @@ def median_filter(data, filter_size):
             temp.sort()
             data_final[i][j] = temp[len(temp) // 2]
             temp = []
+    cpu_end_time = time()  # Get the CPU end time
+    # Print how long the CPU took
+    print("CPU Time: {0} s".format(cpu_end_time - cpu_start_time))
     return data_final
 
 
-start = time.perf_counter()
-
-
 def main():
-    image = "bridge"
+    image = "girl"
     noiseLevel = ["30", "50"]
     img = imread("dataset/"+noiseLevel[0]+"/"+image+".png").astype(np.float32)
-    removed_noise = median_filter(img, 3)
+    removed_noise = median_filter(img, 3).astype(np.uint8)
     imsave("results/filtered"+noiseLevel[0]+image+".png", removed_noise)
 
 
 main()
-end = time.perf_counter()
-print(f'Finished in {round(end-start, 2)} second(s)')
