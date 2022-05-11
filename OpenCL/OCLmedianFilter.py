@@ -5,8 +5,8 @@ import numpy as np
 from imageio import imread, imsave
 from time import time  # Import time tools
 
-image = "girl"
-noiseLevel = ["30", "50"]
+image = "girl"  # image name
+noiseLevel = ["30", "50"]  # percent of noise
 
 # Read in image
 img = imread("dataset/"+noiseLevel[0]+"/"+image+".png").astype(np.float32)
