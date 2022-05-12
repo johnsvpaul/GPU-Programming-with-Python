@@ -34,8 +34,8 @@ def median_filter(data, filter_size):
 
 
 def main():
-    image = "girl"
-    noiseLevel = ["30", "50"]
+    image = "cameraman"
+    noiseLevel = ["30NOISE", "50"]  # percent of noise
     img = imread("dataset/"+noiseLevel[0]+"/"+image+".png").astype(np.float32)
     removed_noise = median_filter(img, 3).astype(np.uint8)
     imsave("results/filtered"+noiseLevel[0]+image+".png", removed_noise)

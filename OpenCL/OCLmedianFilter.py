@@ -5,8 +5,8 @@ import numpy as np
 from imageio import imread, imsave
 from time import time  # Import time tools
 
-image = "girl"  # image name
-noiseLevel = ["30", "50"]  # percent of noise
+image = "1"  # image name
+noiseLevel = ["30NOISE", "50"]  # percent of noise
 
 # Read in image
 img = imread("dataset/"+noiseLevel[0]+"/"+image+".png").astype(np.float32)
@@ -134,7 +134,7 @@ cl.enqueue_copy(queue, removed_noise, result_g).wait()
 
 gpu_end_time = time()  # Get the GPU end time
 
-# Print the time the GPU program took, including both memory copies
+# Print the time the GPU program took, including both memory copies (read+write to gpu)
 print("GPU Time: {0} s".format(gpu_end_time - gpu_start_time))
 
 
@@ -153,5 +153,5 @@ print("GPU Time: {0} s".format(gpu_end_time - gpu_start_time))
 #         print("Device compute units:", device.max_compute_units)
 
 # save image
-imsave("results/OpenCLfiltered" +
+imsave("results/OpenCL" +
        noiseLevel[0]+image+".png", removed_noise.astype(np.uint8))

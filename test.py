@@ -4,15 +4,17 @@ from time import time  # Import time tools
 import pyopencl as cl  # Import the OpenCL GPU computing API
 import numpy as np  # Import number tools
 
-a = np.random.rand(1000).astype(np.float32)  # Create a random array to add
-b = np.random.rand(1000).astype(np.float32)  # Create a random array to add
+size = 5000
+
+a = np.random.rand(size).astype(np.float32)  # Create a random array to add
+b = np.random.rand(size).astype(np.float32)  # Create a random array to add
 
 
 def cpu_array_sum(a, b):  # Sum two arrays on the CPU
     c_cpu = np.empty_like(a)  # Create the destination array
     cpu_start_time = time()  # Get the CPU start time
-    for i in range(1000):
-        for j in range(1000):  # 1000 times add each number and store it
+    for i in range(size):
+        for j in range(size):  # 1000 times add each number and store it
             # This add operation happens 1,000,000 times XXX
             c_cpu[i] = a[i] + b[i]
     cpu_end_time = time()  # Get the CPU end time
@@ -22,7 +24,24 @@ def cpu_array_sum(a, b):  # Sum two arrays on the CPU
 
 
 def gpu_array_sum(a, b):
-    context = cl.create_some_context()  # Initialize the Context
+    # Get platforms, both CPU and GPU
+    plat = cl.get_platforms()
+
+    CPU = plat[0].get_devices()
+    # checks to see if GPU exists
+    try:
+        GPU = plat[1].get_devices()
+
+    except IndexError:
+        GPU = "none"
+
+    # Create context for GPU/CPU
+    if GPU != "none":  # if GPU does exist then create context for GPU
+        context = cl.Context(GPU)
+    else:  # if GPU does not exist then create context for CPU
+        context = cl.Context(CPU)
+
+    # context = cl.create_some_context()  # Initialize the Context
     # Instantiate a Queue with profiling (timing) enabled
     queue = cl.CommandQueue(
         context, properties=cl.command_queue_properties.PROFILING_ENABLE)
@@ -37,7 +56,7 @@ def gpu_array_sum(a, b):
     {
         int i = get_global_id(0);
         int j;
-        for(j = 0; j < 1000; j++)
+        for(j = 0; j < 5000; j++)
         {
             c[i] = a[i] + b[i];
         }
@@ -55,7 +74,9 @@ def gpu_array_sum(a, b):
     cl.enqueue_copy(queue, c_buffer, c_gpu).wait()
     gpu_end_time = time()  # Get the GPU end time
     # Print the time the GPU program took, including both memory copies
+    print("GPU Latency: {0} s".format(gpu_end_time - gpu_start_time-elapsed))
     print("GPU Time: {0} s".format(gpu_end_time - gpu_start_time))
+
     return c_gpu  # Return the sum of the two arrays
 
 
