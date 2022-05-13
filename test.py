@@ -80,5 +80,18 @@ def gpu_array_sum(a, b):
     return c_gpu  # Return the sum of the two arrays
 
 
+# for platform in cl.get_platforms():
+#     for device in platform.get_devices():
+#         print("===============================================================")
+#         print("Platform name:", platform.name)
+#         print("Platform profile:", platform.profile)
+#         print("Platform vendor:", platform.vendor)
+#         print("Platform version:", platform.version)
+#         print("---------------------------------------------------------------")
+#         print("Device name:", device.name)
+#         print("Device type:", cl.device_type.to_string(device.type))
+#         print("Device memory: ", device.global_mem_size//1024//1024, 'MB')
+#         print("Device max clock speed:", device.max_clock_frequency, 'MHz')
+#         print("Device compute units:", device.max_compute_units)
 cpu_array_sum(a, b)  # Call the function that sums two arrays on the CPU
 gpu_array_sum(a, b)  # Call the function that sums two arrays on the GPU
