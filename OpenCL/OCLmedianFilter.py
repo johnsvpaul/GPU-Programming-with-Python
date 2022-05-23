@@ -72,7 +72,7 @@ def filter():
 
 if __name__ == '__main__':
 
-    image = "1L"  # image name
+    image = "1S"  # image name
     noiseLevel = ["30NOISE", "50"]  # percent of noise
 
     # Read in image

@@ -3,7 +3,7 @@ from imageio import imread, imsave
 from time import time  # Import time tools
 
 # Read the image
-image = "1L"
+image = "1S"
 noiseLevel = ["30NOISE", "50"]  # percent of noise
 
 img_noisy1 = imread(
